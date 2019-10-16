@@ -6,7 +6,7 @@ function with a console.log(this).
 
 * 2. Implicit Binding -The value of "this" is defined when a function is called by a proceeding dot.
 
-* 3. New Binding - Applies when a constructor function is used.
+* 3. New Binding - Applies when a constructor function is used and the 'new' keyword is used.
 
 * 4. Explicit Binding - The value of "this" is defined when the methods, .call, .apply, or.bind is called.
 
@@ -26,25 +26,31 @@ console.log(this);
 // Principle 2
 
 // code example for Implicit Binding
-const parent = {
+const grandParent = {
     name: "Linda",
-    age: 65
+    age: 67
 }
-console.log(parent.name);
+console.log(grandParent.name);
 
-
-
-// Principle 3
-
-// code example for New Binding
-let child = {
+let grandChild = {
     name: 'Noah',
     age: 7,
     speak: function () {
         return `Hello my name is ${this.name} and I am ${this.age} years old.`;
     }     
 }
-console.log(child.speak());
+console.log(grandChild.speak());
+
+// Principle 3
+
+// code example for New Binding
+function Veggies(fact) {
+    this.fact = fact;
+}
+
+let carrots = new Veggies('Carrots are great for blood pressure');
+
+console.log(carrots.fact); 
 
 // Principle 4
 

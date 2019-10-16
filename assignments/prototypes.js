@@ -15,7 +15,11 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-
+function GameObject(props) {
+  this.createdAt = props.createdAt;
+  this.name = props.name;
+  this.dimensions = props.dimensions;
+}
 /*
   === CharacterStats ===
   * healthPoints
@@ -23,7 +27,13 @@
   * should inherit destroy() from GameObject's prototype
 */
 
+function CharacterStats(attrs) {
+  GameObject.call(this, attrs);
+  this.healthPoints = attrs.healthPoints;
+  
+}
 /*
+
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
   * weapons
@@ -32,7 +42,23 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+ function Humanoid(tools) {
+  GameObject.call(this, tools);
+  CharacterStats.call(this, tools);
+  this.team = tools.team;
+  this.weapons = tools.weapons;
+  this.language = tools.language;
+ }
+
+Humanoid.prototype.greet = function () {
+  return `${this.name} offers a greeting in ${this.language}.`
+}
+Humanoid.prototype.takeDamage = function () {
+  return `${this.name} took damage.`;
+}
+Humanoid.prototype.destroy = function () {
+  return `${this.name} was removed from the game.`;
+};
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +67,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,7 +128,6 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
