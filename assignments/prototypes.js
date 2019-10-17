@@ -140,9 +140,75 @@ Humanoid.prototype.greet = function () {
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
 
-  // function Villain(minions) {
-  //   GameObject.call(this, minions);
-  //   CharacterStats.call(this, minions);
-  // } 
+  function Villain(minions) {
+    GameObject.call(this, minions);
+    CharacterStats.call(this, minions);
+    Humanoid.call(this, minions);
+  } 
+
+    Villain.prototype = Object.create(GameObject.prototype);
+    Villain.prototype = Object.create(CharacterStats.prototype);
+    Villain.prototype = Object.create(Humanoid.prototype);
+
+    Villain.prototype.fightHero = function () {
+      return `${this.name} lost 2 healthpoints. You now have ${this.healthPoints - 2} healthpoints.`
+    }
+
+  function Hero(soldiers) {
+    GameObject.call(this, soldiers);
+    CharacterStats.call(this, soldiers);
+    Humanoid.call(this, soldiers);
+  } 
+
+    Hero.prototype = Object.create(GameObject.prototype);
+    Hero.prototype = Object.create(CharacterStats.prototype);
+    Hero.prototype = Object.create(Humanoid.prototype);
+    Hero.prototype = Object.create(Villain.prototype);
+
+    Hero.prototype.fightVillain = function () {
+      return `${this.name} gained 2 healthpoints. You now have ${this.healthPoints +2} healthpoints.`
+    }
+
+const evilVillain = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 2,
+  },
+  healthPoints: 15,
+  name: 'Vouldemort',
+  team: 'DeathEaters',
+  weapons: [
+    'Magic Wand',
+    'Bad Spells',
+  ],
+  language: 'Common Tongue',
+});
+
+const braveHero = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 10,
+  name: 'Harry',
+  team: 'Griffindor',
+  weapons: [
+    'Magic Wand',
+    'Sword',
+  ],
+  language: 'Common Tongue',
+});
+
+console.log(braveHero.name);
+console.log(braveHero.fightVillain());
+console.log(evilVillain.name);
+console.log(evilVillain.fightHero());
+
+
+
 
 
