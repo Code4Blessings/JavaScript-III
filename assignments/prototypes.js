@@ -15,7 +15,15 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject(props) {
+  this.createdAt = props.createdAt;
+  this.name = props.name;
+  this.dimensions = props.dimensions;
+}
 
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`
+}
 /*
   === CharacterStats ===
   * healthPoints
@@ -23,7 +31,18 @@
   * should inherit destroy() from GameObject's prototype
 */
 
+function CharacterStats(attrs) {
+  GameObject.call(this, attrs);
+  this.healthPoints = attrs.healthPoints;
+  
+}
+CharacterStats.prototype = Object.create(GameObject.prototype);
+CharacterStats.prototype.takeDamage = function () {
+  return `${this.name} took damage.`;
+}
+
 /*
+
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
   * weapons
@@ -32,7 +51,20 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+ function Humanoid(tools) {
+  GameObject.call(this, tools);
+  CharacterStats.call(this, tools);
+  this.team = tools.team;
+  this.weapons = tools.weapons;
+  this.language = tools.language;
+ }
+Humanoid.prototype = Object.create(GameObject.prototype);
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function () {
+  return `${this.name} offers a greeting in ${this.language}.`
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +73,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,9 +134,81 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(minions) {
+    GameObject.call(this, minions);
+    CharacterStats.call(this, minions);
+    Humanoid.call(this, minions);
+  } 
+
+    Villain.prototype = Object.create(GameObject.prototype);
+    Villain.prototype = Object.create(CharacterStats.prototype);
+    Villain.prototype = Object.create(Humanoid.prototype);
+
+    Villain.prototype.fightHero = function () {
+      return `${this.name} lost 2 healthpoints. You now have ${this.healthPoints - 2} healthpoints.`
+    }
+
+  function Hero(soldiers) {
+    GameObject.call(this, soldiers);
+    CharacterStats.call(this, soldiers);
+    Humanoid.call(this, soldiers);
+  } 
+
+    Hero.prototype = Object.create(GameObject.prototype);
+    Hero.prototype = Object.create(CharacterStats.prototype);
+    Hero.prototype = Object.create(Humanoid.prototype);
+    Hero.prototype = Object.create(Villain.prototype);
+
+    Hero.prototype.fightVillain = function () {
+      return `${this.name} gained 2 healthpoints. You now have ${this.healthPoints +2} healthpoints.`
+    }
+
+const evilVillain = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 2,
+  },
+  healthPoints: 15,
+  name: 'Vouldemort',
+  team: 'DeathEaters',
+  weapons: [
+    'Magic Wand',
+    'Bad Spells',
+  ],
+  language: 'Common Tongue',
+});
+
+const braveHero = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 10,
+  name: 'Harry',
+  team: 'Griffindor',
+  weapons: [
+    'Magic Wand',
+    'Sword',
+  ],
+  language: 'Common Tongue',
+});
+
+console.log(braveHero.name);
+console.log(braveHero.fightVillain());
+console.log(evilVillain.name);
+console.log(evilVillain.fightHero());
+
+
+
+
+
