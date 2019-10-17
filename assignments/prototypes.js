@@ -20,6 +20,10 @@ function GameObject(props) {
   this.name = props.name;
   this.dimensions = props.dimensions;
 }
+
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`
+}
 /*
   === CharacterStats ===
   * healthPoints
@@ -60,12 +64,7 @@ Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function () {
   return `${this.name} offers a greeting in ${this.language}.`
 }
-Humanoid.prototype.takeDamage = function () {
-  return `${this.name} took damage.`;
-}
-Humanoid.prototype.destroy = function () {
-  return `${this.name} was removed from the game.`;
-};
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -140,3 +139,10 @@ Humanoid.prototype.destroy = function () {
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  // function Villain(minions) {
+  //   GameObject.call(this, minions);
+  //   CharacterStats.call(this, minions);
+  // } 
+
+
